@@ -1,0 +1,8 @@
+= Padrino Framework Static Files
+
+Here you can find JS, UJS, CSS and other static files used by padrino-framework
+
+Feel free to fork it and help us to keep everything updated.
+
+Thanks
+Padrino Framework Staff
