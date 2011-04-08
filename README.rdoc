@@ -13,6 +13,4 @@ You can find <tt>JS</tt> and <tt>UJS</tt> adapters for:
 * mootools (ujs not finished)
 * right (ujs not finished)
 
-=====
-Thanks
 Padrino Framework Staff
