@@ -1,8 +1,18 @@
 = Padrino Framework Static Files
 
-Here you can find JS, UJS, CSS and other static files used by padrino-framework
+Here you can find <tt>JS</tt>, <tt>UJS</tt>, <tt>CSS</tt> and other static files used by <tt>padrino-framework</tt>
 
 Feel free to fork it and help us to keep everything updated.
 
+You can find <tt>JS</tt> and <tt>UJS</tt> adapters for:
+
+* dojo (ujs not finished)
+* ext (ujs not finished)
+* jquery (ujs available)
+* prototype (ujs available)
+* mootools (ujs not finished)
+* right (ujs not finished)
+
+=====
 Thanks
 Padrino Framework Staff
