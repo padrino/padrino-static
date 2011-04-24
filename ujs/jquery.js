@@ -10,10 +10,10 @@
 $("form[data-remote=true]").live('submit', function(e) {
   e.preventDefault(); e.stopped = true;
   var element = $(e.target);
-  var message = element.attr('data-confirm');
+  var message = element.data('confirm');
   if (message && !confirm(message)) { return false; }
   JSAdapter.sendRequest(element, { 
-    verb: element.attr('data-method') || element.attr('method') || 'post', 
+    verb: element.data('method') || element.attr('method') || 'post', 
     url: element.attr('action'), 
     params: element.serializeArray()
   });
@@ -24,7 +24,7 @@ $("form[data-remote=true]").live('submit', function(e) {
 **/
 
 $("a[data-confirm]").live('click', function(e) {
-  var message = $(e.target).attr('data-confirm');
+  var message = $(this).data('confirm');
   if (!confirm(message)) { e.preventDefault(); e.stopped = true; }
 });
 
@@ -34,11 +34,11 @@ $("a[data-confirm]").live('click', function(e) {
 **/
 
 $("a[data-remote=true]").live('click', function(e) {
-  var element = $(e.target); 
+  var element = $(this); 
   if (e.stopped) return;
   e.preventDefault(); e.stopped = true;
   JSAdapter.sendRequest(element, { 
-    verb: element.attr('data-method') || 'get', 
+    verb: element.data('method') || 'get', 
     url: element.attr('href')
   });
 });
@@ -78,7 +78,7 @@ var JSAdapter = {
   // Triggers a particular method verb to be triggered in a form posting to the url
   // JSAdapter.sendMethod(element);
   sendMethod : function(element) {
-    var verb = element.attr('data-method');
+    var verb = element.data('method');
     var url = element.attr('href');
     var form = $('<form method="post" action="'+url+'"></form>');
     form.hide().appendTo('body');
