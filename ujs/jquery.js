@@ -9,7 +9,7 @@
 
 $("form[data-remote=true]").live('submit', function(e) {
   e.preventDefault(); e.stopped = true;
-  var element = $(e.target);
+  var element = $(this);
   var message = element.data('confirm');
   if (message && !confirm(message)) { return false; }
   JSAdapter.sendRequest(element, { 
