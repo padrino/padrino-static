@@ -15,7 +15,7 @@ $("form[data-remote=true]").live('submit', function(e) {
   JSAdapter.sendRequest(element, { 
     verb: element.data('method') || element.attr('method') || 'post', 
     url: element.attr('action'), 
-    dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType),
+    dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType) || 'script',
     params: element.serializeArray()
   });
 });
