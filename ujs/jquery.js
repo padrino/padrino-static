@@ -15,6 +15,7 @@ $("form[data-remote=true]").live('submit', function(e) {
   JSAdapter.sendRequest(element, { 
     verb: element.data('method') || element.attr('method') || 'post', 
     url: element.attr('action'), 
+    dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType),
     params: element.serializeArray()
   });
 });
@@ -59,14 +60,14 @@ var JSAdapter = {
   // Sends an xhr request to the specified url with given verb and params
   // JSAdapter.sendRequest(element, { verb: 'put', url : '...', params: {} });
   sendRequest : function(element, options) {
-    var verb = options.verb, url = options.url, params = options.params;
+    var verb = options.verb, url = options.url, params = options.params, dataType = options.dataType;
     var event = element.trigger("ajax:before");
     if (event.stopped) return false;
     $.ajax({
       url: url,
       type: verb.toUpperCase() || 'POST',
       data: params || [],
-      dataType: 'script',
+      dataType: dataType,
 
       beforeSend: function(request) { element.trigger("ajax:loading",  [ request ]); },
       complete:   function(request) { element.trigger("ajax:complete", [ request ]); },
