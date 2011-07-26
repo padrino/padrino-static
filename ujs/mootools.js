@@ -96,7 +96,6 @@ window.addEvent('domready', function() {
     if (e.stopped) {
       return;
     }
-    console.log(e.target);
     JSAdapter.sendMethod(e.target);
     e.halt();
   });
