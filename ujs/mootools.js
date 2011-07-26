@@ -6,67 +6,6 @@
 // Halt Definition
 Event.implement({ halt: function() { this.stop(); this.stopped = true; }});
 
-window.addEvent('domready', function() {
-
-/* Remote Form Support
- * form_for @user, '/user', :remote => true
-**/
-
-document.body.delegateEvent('submit', { "form[data-remote=true]" :
-  function(e) {
-    e.halt();
-    var element = e.target;
-    var message = element.get('data-confirm');
-    if (message && !confirm(message)) { return false; }
-    JSAdapter.sendRequest(element, { 
-      verb: element.get('data-method') || element.get('method') || 'post', 
-      url: element.get('action'), 
-      params: element.toQueryString()
-    });
-  }
-});
-
-/* Confirmation Support
- * link_to 'sign out', '/logout', :confirm => "Log out?"
-**/
-
-document.body.delegateEvent('click', { "a[data-confirm]" : 
-  function(e) {
-    var message = e.target.get('data-confirm');
-    if (message && !confirm(message)) { e.halt(); }
-  }
-});
-
-/* 
- * Link Remote Support 
- * link_to 'add item', '/create', :remote => true
-**/
-
-document.body.delegateEvent('click', { "a[data-remote]" : 
-  function(e) {
-    if (e.stopped) return; e.halt();
-    var element = e.target;
-    JSAdapter.sendRequest(element, { 
-      verb: element.get('data-method') || 'get', 
-      url: element.get('href')
-    }); 
-  }
-});
-
-/* 
- * Link Method Support
- * link_to 'delete item', '/destroy', :method => :delete
-**/
-
-document.body.delegateEvent('click', { "a[data-method]:not([data-remote])" :
-  function(e) {
-    if (e.stopped) return;
-    console.log(e.target);
-    JSAdapter.sendMethod(e.target);
-    e.halt();
-  }});
-});
-
 /* JSAdapter */
 var JSAdapter = {
   // Sends an xhr request to the specified url with given verb and params
@@ -102,3 +41,64 @@ var JSAdapter = {
     form.submit();
   }
 };
+window.addEvent('domready', function() {
+
+/* Remote Form Support
+ * form_for @user, '/user', :remote => true
+**/
+
+  $$("form[data-remote=true]").addEvent('click', function(e) {
+    e.halt();
+    var element = e.target;
+    var message = element.get('data-confirm');
+    if (message && !confirm(message)) { 
+      return false; 
+    }
+    JSAdapter.sendRequest(element, { 
+      verb: element.get('data-method') || element.get('method') || 'post', 
+      url: element.get('action'), 
+      params: element.toQueryString()
+    });
+  });
+
+  /* Confirmation Support
+   * link_to 'sign out', '/logout', :confirm => "Log out?"
+  **/
+
+  $$('a[data-confirm').addEvent('click', function(e) {
+    var message = e.target.get('data-confirm');
+    if (message && !confirm(message)) { 
+      e.halt(); 
+    }
+  });
+
+  /* 
+   * Link Remote Support 
+   * link_to 'add item', '/create', :remote => true
+  **/
+
+  $$("a[data-remote]").addEvent('click', function(e) {
+    if (e.stopped) return; e.halt();
+    var element = e.target;
+    JSAdapter.sendRequest(element, { 
+      verb: element.get('data-method') || 'get', 
+      url: element.get('href')
+    }); 
+  })
+
+  /* 
+   * Link Method Support
+   * link_to 'delete item', '/destroy', :method => :delete
+  **/
+
+
+  $$("a[data-method]:not([data-remote])").addEvent('click', function(e) {
+    if (e.stopped) {
+      return;
+    }
+    console.log(e.target);
+    JSAdapter.sendMethod(e.target);
+    e.halt();
+  });
+
+});
