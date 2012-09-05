@@ -50,8 +50,9 @@ $("a[data-remote=true]").live('click', function(e) {
 **/
 
 $("a[data-method]:not([data-remote])").live('click', function(e) {
+  var element = $(this); 
   if (e.stopped) return;
-  JSAdapter.sendMethod($(e.target));
+  JSAdapter.sendMethod(element);
   e.preventDefault(); e.stopped = true;
 });
 
