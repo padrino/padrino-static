@@ -8,16 +8,18 @@
 **/
 
 $(function(){
-    $('form[data-remote=true]').on('submit', function(e) {
-      e.preventDefault(); e.stopped = true;
+    $('form').on('submit', function(e) {
       var element = $(this), message = element.data('confirm');
       if (message && !confirm(message)) { return false; }
-      JSAdapter.sendRequest(element, { 
-        verb: element.data('method') || element.attr('method') || 'post', 
-        url: element.attr('action'), 
-        dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType) || 'script',
-        params: element.serializeArray()
-      });
+      if (element.data('remote') == true) {
+        e.preventDefault(); e.stopped = true;
+        JSAdapter.sendRequest(element, {
+          verb: element.data('method') || element.attr('method') || 'post',
+          url: element.attr('action'),
+          dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType) || 'script',
+          params: element.serializeArray()
+        });
+      }
     });
 
     /* Confirmation Support
@@ -29,22 +31,22 @@ $(function(){
       if (!confirm(message)) { e.preventDefault(); e.stopped = true; }
     });
 
-    /* 
-     * Link Remote Support 
+    /*
+     * Link Remote Support
      * link_to 'add item', '/create', :remote => true
     **/
 
     $('a[data-remote=true]').on('click', function(e) {
-      var element = $(this); 
+      var element = $(this);
       if (e.stopped) return;
       e.preventDefault(); e.stopped = true;
-      JSAdapter.sendRequest(element, { 
-        verb: element.data('method') || 'get', 
+      JSAdapter.sendRequest(element, {
+        verb: element.data('method') || 'get',
         url: element.attr('href')
       });
     });
 
-    /* 
+    /*
      * Link Method Support
      * link_to 'delete item', '/destroy', :method => :delete
     **/
