@@ -8,16 +8,18 @@
 **/
 
 $(function(){
-    $('form[data-remote=true]').on('submit', function(e) {
-      e.preventDefault(); e.stopped = true;
+    $('form').on('submit', function(e) {
       var element = $(this), message = element.data('confirm');
       if (message && !confirm(message)) { return false; }
-      JSAdapter.sendRequest(element, {
-        verb: element.data('method') || element.attr('method') || 'post',
-        url: element.attr('action'),
-        dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType) || 'script',
-        params: element.serializeArray()
-      });
+      if (element.data('remote') == true) {
+        e.preventDefault(); e.stopped = true;
+        JSAdapter.sendRequest(element, {
+          verb: element.data('method') || element.attr('method') || 'post',
+          url: element.attr('action'),
+          dataType: element.data('type') || ($.ajaxSettings && $.ajaxSettings.dataType) || 'script',
+          params: element.serializeArray()
+        });
+      }
     });
 
     /* Confirmation Support
