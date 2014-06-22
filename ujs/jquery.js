@@ -26,7 +26,7 @@ $(function(){
      * link_to 'sign out', '/logout', :confirm => 'Log out?'
     **/
 
-    $('a[data-confirm]').on('click', function(e) {
+    $(document).on('click', 'a[data-confirm]', function(e) {
       var message = $(this).data('confirm');
       if (!confirm(message)) { e.preventDefault(); e.stopped = true; }
     });
@@ -36,7 +36,7 @@ $(function(){
      * link_to 'add item', '/create', :remote => true
     **/
 
-    $('a[data-remote=true]').on('click', function(e) {
+    $(document).on('click', 'a[data-remote=true]', function(e) {
       var element = $(this);
       if (e.stopped) return;
       e.preventDefault(); e.stopped = true;
@@ -51,7 +51,7 @@ $(function(){
      * link_to 'delete item', '/destroy', :method => :delete
     **/
 
-    $('a[data-method]:not([data-remote])').on('click', function(e) {
+    $(document).on('click', 'a[data-method]:not([data-remote])', function(e) {
       if (e.stopped) return;
       JSAdapter.sendMethod($(this));
       e.preventDefault(); e.stopped = true;
