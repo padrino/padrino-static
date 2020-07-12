@@ -8,7 +8,7 @@
 **/
 
 $(function(){
-    $('form').on('submit', function(e) {
+    $(document).on('submit', 'form', function(e) {
       var element = $(this), message = element.data('confirm');
       if (message && !confirm(message)) { return false; }
       if (element.data('remote') == true) {
