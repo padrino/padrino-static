@@ -83,25 +83,24 @@ $(function(){
       sendMethod: function(element) {
         var verb = element.data('method');
         var url = element.attr('href');
-        var form = $('<form method="post" action="'+url+'"></form>');
+        var form = $('<form>', { method: 'post', action: url });
         var csrf_token = $('meta[name=csrf-token]').attr('content');
         var csrf_param = $('meta[name=csrf-param]').attr('content');
         form.hide().appendTo('body');
         if (verb !== 'post') {
-          var field = '<input type="hidden" name="_method" value="' + verb + '" />';
-          form.append(field);
+          form.append($('<input>', { type: 'hidden', name: '_method', value: verb }));
         }
         if (csrf_param !== undefined && csrf_token !== undefined) {
-          var field = '<input type="hidden" name="' + csrf_param + '" value="' + csrf_token + '" />';
-          form.append(field);
+          form.append($('<input>', { type: 'hidden', name: csrf_param, value: csrf_token }));
         }
         form.submit();
       }
     };
 
-    // Every xhr request is sent along with the CSRF token.
+    // Same-origin requests that change state are sent along with the CSRF token.
     $.ajaxPrefilter(function(options, originalOptions, xhr) {
-      if (options.verb !== 'GET') {
+      var type = (options.type || 'GET').toUpperCase();
+      if (!options.crossDomain && type !== 'GET' && type !== 'HEAD') {
         var token = $('meta[name="csrf-token"]').attr('content');
         if (token) xhr.setRequestHeader('X-CSRF-Token', token);
       }
